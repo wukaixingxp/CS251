@@ -1,0 +1,27 @@
+
+(define (gen-list start stop)
+          (if (> start stop)
+              '()
+              (cons start (gen-list(+ start 1) stop))))
+
+(define (pair-sum? lst val)
+          (cond ((equal? (length lst) 1) #f)
+            ((= val (+ (car lst) (car(cdr lst)))) 
+              #t)
+              (else (pair-sum? (cdr lst) val))))
+
+(define gen-lazy-list
+  (lambda (start stop)
+    (if (> start stop)
+        #f
+        (cons start
+            (lambda () (gen-lazy-list (+ start 1) stop))))))
+
+(define (pair-sum-lazy? lst val)
+  (cond ((boolean? ((cdr lst)))#f)
+        ((= val (+ (car lst) (car((cdr lst))))) #t)
+        (else (pair-sum-lazy? ((cdr lst)) val))))
+(gen-list 3 5)
+(pair-sum? '(1 2 3) 1)
+((cdr(gen-lazy-list 1 5)))
+(pair-sum-lazy? (gen-lazy-list 1 5) 4)
